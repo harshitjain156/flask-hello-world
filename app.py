@@ -9,7 +9,19 @@ def hello_world():
 
 price_api_key = "579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b"  
 
+@app.route('/guide', methods=["POST"])
+def add_guide():
+    title = request.json['title']
+    content = request.json['content']
 
+    new_guide = Guide(title, content)
+
+    db.session.add(new_guide)
+    db.session.commit()
+
+    guide = Guide.query.get(new_guide.id)
+
+    return guide_schema.jsonify(guide)
     
 @app.route('/price', methods=['POST'])
 def GetPrice():
